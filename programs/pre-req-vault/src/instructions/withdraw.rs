@@ -1,4 +1,4 @@
-use crate::state::VaultState;
+use crate::{state::VaultState, APPLICATION_ACCOUNT_SEED, VAULT_SEED, VAULT_STATE_SEED};
 use anchor_lang::{
     prelude::*,
     system_program::{transfer, Transfer},
@@ -14,24 +14,24 @@ pub struct Withdraw<'info> {
     pub user: Signer<'info>,
 
     #[account(
-    mut,
-    seeds = [b"vault", vault_state.key().as_ref()],
-    bump = vault_state.vault_bump,
-  )]
+        mut,
+        seeds = [VAULT_SEED, vault_state.key().as_ref()],
+        bump = vault_state.vault_bump,
+    )]
     pub vault: SystemAccount<'info>,
 
     #[account(
-    seeds = [b"state", user.key().as_ref()],
-    bump = vault_state.state_bump
-  )]
+        seeds = [VAULT_STATE_SEED, user.key().as_ref()],
+        bump = vault_state.state_bump
+    )]
     pub vault_state: Account<'info, VaultState>,
 
     /// CHECK: application account will be initialized by the cpi call to the application program
     #[account(
-    mut,
-    seeds = [b"prereqs", user.key().as_ref()],
-    seeds::program = application_program.key(),
-    bump
+        mut,
+        seeds = [APPLICATION_ACCOUNT_SEED, user.key().as_ref()],
+        seeds::program = application_program.key(),
+        bump
     )]
     pub application_account: UncheckedAccount<'info>,
 
@@ -48,7 +48,7 @@ impl<'info> Withdraw<'info> {
         };
 
         let seeds = &[
-            b"vault",
+            VAULT_SEED,
             self.vault_state.to_account_info().key.as_ref(),
             &[self.vault_state.vault_bump],
         ];
@@ -60,7 +60,7 @@ impl<'info> Withdraw<'info> {
         transfer(cpi_ctx, amount)?;
 
         // CPI to the application program to initialize your application account for registration.
-        // All the neccessary function and account struct have been imported. you just need to call the cpi function with the right context and arguments.
+        // All the necessary function and account struct have been imported. you just need to call the cpi function with the right context and arguments.
         // make sure you pass in your github id
 
         Ok(())

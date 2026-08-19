@@ -28,10 +28,10 @@
 //     let user = payer.pubkey();
 
 //     let (vault_state_pda, state_bump) =
-//         Pubkey::find_program_address(&[b"state", user.as_ref()], &pre_req_vault::id());
+//         Pubkey::find_program_address(&[VAULT_STATE_SEED, user.as_ref()], &pre_req_vault::id());
 
 //     let (vault_pda, vault_bump) =
-//         Pubkey::find_program_address(&[b"vault", vault_state_pda.as_ref()], &pre_req_vault::id());
+//         Pubkey::find_program_address(&[VAULT_SEED, vault_state_pda.as_ref()], &pre_req_vault::id());
 
 //     // Initialize
 //     let init_ix = Instruction {

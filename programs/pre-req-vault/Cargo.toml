@@ -10,7 +10,7 @@ crate-type = ["cdylib", "lib"]
 name = "pre_req_vault"
 
 [features]
-default = []
+default = ["anchor-debug", "cpi"]
 cpi = ["no-entrypoint"]
 no-entrypoint = []
 no-log-ix-name = []

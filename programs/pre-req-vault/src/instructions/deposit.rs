@@ -1,4 +1,4 @@
-use crate::state::VaultState;
+use crate::{state::VaultState, VAULT_SEED, VAULT_STATE_SEED};
 use anchor_lang::{
     prelude::*,
     system_program::{transfer, Transfer},
@@ -10,16 +10,16 @@ pub struct Deposit<'info> {
     pub user: Signer<'info>,
 
     #[account(
-    mut,
-    seeds = [b"vault", vault_state.key().as_ref()],
-    bump = vault_state.vault_bump,
-  )]
+        mut,
+        seeds = [VAULT_SEED, vault_state.key().as_ref()],
+        bump = vault_state.vault_bump,
+    )]
     pub vault: SystemAccount<'info>,
 
     #[account(
-    seeds = [b"state", user.key().as_ref()],
-    bump = vault_state.state_bump
-  )]
+        seeds = [VAULT_STATE_SEED, user.key().as_ref()],
+        bump = vault_state.state_bump
+    )]
     pub vault_state: Account<'info, VaultState>,
 
     system_program: Program<'info, System>,

@@ -1,4 +1,4 @@
-use crate::state::VaultState;
+use crate::{state::VaultState, VAULT_SEED, VAULT_STATE_SEED};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -9,14 +9,14 @@ pub struct Initialize<'info> {
     #[account(
         init,
         payer = user,
-        seeds = [b"state", user.key().as_ref()],
+        seeds = [VAULT_STATE_SEED, user.key().as_ref()],
         bump,
         space = 8 + VaultState::INIT_SPACE
     )]
     pub vault_state: Account<'info, VaultState>,
 
     #[account(
-        seeds = [b"vault", vault_state.key().as_ref()],
+        seeds = [VAULT_SEED, vault_state.key().as_ref()],
         bump
     )]
     pub vault: SystemAccount<'info>,
