@@ -25,7 +25,7 @@ pub struct Initialize<'info> {
 }
 
 impl<'info> Initialize<'info> {
-    pub fn intialize(&mut self, bumps: &InitializeBumps) -> Result<()> {
+    pub fn initialize(&mut self, bumps: &InitializeBumps) -> Result<()> {
         // Save data to state
         self.vault_state.vault_bump = bumps.vault;
         self.vault_state.state_bump = bumps.vault_state;
