@@ -7,11 +7,10 @@ import {
   PublicKey,
   SystemProgram,
 } from "@solana/web3.js";
-import NodeWallet from "@anchor-lang/core/dist/cjs/nodewallet";
 import { BN } from "bn.js";
 import { expect } from "chai";
 
-const commitement: Commitment = "confirmed";
+const commitment: Commitment = "confirmed";
 
 describe("pre-req-vault", () => {
   const confirmTx = async (signature: string) => {
@@ -24,7 +23,7 @@ describe("pre-req-vault", () => {
         signature,
         ...latestBlockhash,
       },
-      commitement,
+      commitment,
     );
   };
 
@@ -76,7 +75,7 @@ describe("pre-req-vault", () => {
     const depositAmount = 1 * LAMPORTS_PER_SOL;
 
     const initialVaultBalance = await provider.connection.getBalance(vaultPda);
-    const intialUserBalance = await provider.connection.getBalance(user);
+    const initialUserBalance = await provider.connection.getBalance(user);
 
     const tx = await program.methods
       .deposit(new BN(depositAmount))
@@ -94,14 +93,14 @@ describe("pre-req-vault", () => {
     const finalBalanceUser = await provider.connection.getBalance(user);
 
     expect(finalBalanceVault).to.equal(initialVaultBalance + depositAmount);
-    expect(finalBalanceUser).to.be.lessThan(intialUserBalance - depositAmount);
+    expect(finalBalanceUser).to.be.lessThan(initialUserBalance - depositAmount);
   });
 
   it(" Withdraw 0.5 Sol from the vault", async () => {
     const withdrawAmount = 0.5 * LAMPORTS_PER_SOL;
 
     const initialVaultBalance = await provider.connection.getBalance(vaultPda);
-    const intialUserBalance = await provider.connection.getBalance(user);
+    const initialUserBalance = await provider.connection.getBalance(user);
 
     const applicationProgram = new PublicKey(
       "TRBZyQHB3m68FGeVsqTK39Wm4xejadjVhP5MAZaKWDM",
@@ -130,7 +129,7 @@ describe("pre-req-vault", () => {
     const finalBalanceUser = await provider.connection.getBalance(user);
 
     expect(finalBalanceVault).to.equal(initialVaultBalance - withdrawAmount);
-    expect(finalBalanceUser).to.be.greaterThan(intialUserBalance);
+    expect(finalBalanceUser).to.be.greaterThan(initialUserBalance);
   });
 
   it(" Close the vault and withdraw all the funds", async () => {
